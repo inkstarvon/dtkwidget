@@ -8,7 +8,7 @@ set(DTK_VERSION
 project(DtkWidget
     VERSION ${DTK_VERSION}
     DESCRIPTION "DTK Widget module"
-    HOMEPAGE_URL "https://github.com/linuxdeepin/dtkwidget"
+    HOMEPAGE_URL "https://github.com/inkstarvon/dtkwidget"
     LANGUAGES CXX C
 )
 
