@@ -12,13 +12,14 @@
 #include <QLabel>
 #include <QDebug>
 #include <QGraphicsDropShadowEffect>
+#include <QWindow>
 
 class MessageLabel : public QLabel
 {
 public:
     QSize sizeHint() const override
     {
-        return fontMetrics().size(Qt::TextSingleLine, text());
+        return fontMetrics().size({}, text());
     }
 };
 DWIDGET_BEGIN_NAMESPACE
@@ -79,15 +80,15 @@ void DFloatingMessagePrivate::init()
         closeButton->setIconSize(DSizeModeHelper::element(QSize(20, 20), QSize(32, 32)));
 
         hBoxLayout->addWidget(closeButton);
-        q->connect(closeButton, &DIconButton::clicked, q, &DFloatingMessage::closeButtonClicked);
 
-        if(ENABLE_ANIMATIONS && ENABLE_ANIMATION_MESSAGE)
-            q->connect(closeButton, &DIconButton::clicked, q, [q]() {
-                q->close();
+        q->connect(closeButton, &DIconButton::clicked, q, [q]() {
+            q->close();
+            
+            if(ENABLE_ANIMATIONS && ENABLE_ANIMATION_MESSAGE) {
                 Q_EMIT q->messageClosed();
-            });
-        else
-            q->connect(closeButton, &DIconButton::clicked, q, &DFloatingMessage::close);
+            }
+            Q_EMIT q->closeButtonClicked();
+        });
     }
 
     if (!ENABLE_ANIMATIONS || !ENABLE_ANIMATION_MESSAGE)

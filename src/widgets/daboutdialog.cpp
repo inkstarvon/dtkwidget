@@ -32,7 +32,7 @@
 DCORE_USE_NAMESPACE
 DWIDGET_BEGIN_NAMESPACE
 
-const QString DAboutDialogPrivate::websiteLinkTemplate = "<a href='%1' style='text-decoration: none; font-size:12px; color: rgba(0,129,255,0.9);'>%2</a>";
+const QString DAboutDialogPrivate::websiteLinkTemplate = "<a href='%1' style='text-decoration: none; color: rgba(0,129,255,0.9);'>%2</a>";
 
 DRedPointLabel::DRedPointLabel(QWidget *parent)
     : QLabel(parent)
@@ -92,6 +92,7 @@ void DAboutDialogPrivate::init()
     websiteLabel->setObjectName("WebsiteLabel");
     websiteLabel->setContextMenuPolicy(Qt::NoContextMenu);
     websiteLabel->setOpenExternalLinks(false);
+    fontManager->bind(websiteLabel, DFontSizeManager::T8, QFont::Medium);
     updateWebsiteLabel();
 
     descriptionLabel = new QLabel();
@@ -459,9 +460,7 @@ void DAboutDialog::setProductIcon(const QIcon &icon)
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     d->logoLabel->setPixmap(icon.pixmap(windowHandle(), QSize(128, 128)));
 #else
-    winId(); // TODO: wait for checking
-    auto window = windowHandle();
-    d->logoLabel->setPixmap(icon.pixmap(QSize(128, 128), window->screen()->devicePixelRatio()));
+    d->logoLabel->setPixmap(icon.pixmap(QSize(128, 128), devicePixelRatio()));
 #endif
 }
 

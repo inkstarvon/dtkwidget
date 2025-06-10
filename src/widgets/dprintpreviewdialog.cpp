@@ -874,7 +874,7 @@ void DPrintPreviewDialogPrivate::initWaterMarkui()
     DRadioButton *picBtn = new DRadioButton(qApp->translate("DPrintPreviewDialogPrivate", "Picture watermark"));
     picPathEdit = new DFileChooserEdit;
     picPathEdit->setObjectName(_d_printSettingNameMap[DPrintPreviewSettingInterface::SC_Watermark_ImageEdit]);
-    picPathEdit->setNameFilters(QStringList() << "*.png *.jpg");
+    picPathEdit->setNameFilters(QStringList() << qApp->translate("DPrintPreviewDialogPrivate", "Images") + "(*.png *.jpg)");
     QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     picPathEdit->setDirectoryUrl(QUrl(desktopPath, QUrl::TolerantMode));
 
@@ -1050,7 +1050,11 @@ void DPrintPreviewDialogPrivate::initconnections()
     QObject::connect(printBtn, SIGNAL(clicked(bool)), q, SLOT(_q_startPrint(bool)));
     QObject::connect(waterColorBtn, SIGNAL(clicked(bool)), q, SLOT(_q_colorButtonCliked(bool)));
     QObject::connect(colorModeCombo, SIGNAL(currentIndexChanged(int)), q, SLOT(_q_ColorModeChange(int)));
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QObject::connect(orientationgroup, SIGNAL(buttonClicked(int)), q, SLOT(_q_orientationChanged(int)));
+#else
+    QObject::connect(orientationgroup, SIGNAL(idClicked(int)), q, SLOT(_q_orientationChanged(int)));
+#endif
     QObject::connect(waterTextCombo, SIGNAL(currentIndexChanged(int)), q, SLOT(_q_textWaterMarkModeChanged(int)));
     QObject::connect(inorderCombo, SIGNAL(currentIndexChanged(int)), q, SLOT(_q_printOrderComboIndexChanged(int)));
     QObject::connect(waterTextEdit, SIGNAL(editingFinished()), q, SLOT(_q_customTextWatermarkFinished()));
